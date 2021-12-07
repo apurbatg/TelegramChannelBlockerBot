@@ -28,7 +28,6 @@ async def message_handler(client: Client, update: Update, _, chats: dict):
                 return
 
             # Delete the message sent by channel and ban it.
-            await client.delete_messages(chat_id, message.id)
             await client.send(
                 functions.channels.EditBanned(
                     channel=await client.resolve_peer(chat_id),
@@ -45,11 +44,15 @@ async def message_handler(client: Client, update: Update, _, chats: dict):
                     )
                 )
             )
+            await client.delete_messages(chat_id, message.id)
+            logger.debug(f"Banned channel {channel_id} from group {chat_id}")
 
             break
         except errors.FloodWait as e:
             logger.debug(f"Bot got rate limited, retry after {e.x} seconds...")
             await asyncio.sleep(e.x)
+        except errors.CHAT_ADMIN_REQUIRED:
+            pass
         except:  # noqa
             logger.exception("An exception occurred in message_handler")
             break
