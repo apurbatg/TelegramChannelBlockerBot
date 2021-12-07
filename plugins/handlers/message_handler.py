@@ -51,7 +51,7 @@ async def message_handler(client: Client, update: Update, _, chats: dict):
         except errors.FloodWait as e:
             logger.debug(f"Bot got rate limited, retry after {e.x} seconds...")
             await asyncio.sleep(e.x)
-        except errors.CHAT_ADMIN_REQUIRED:
+        except errors.ChatAdminRequired:
             pass
         except:  # noqa
             logger.exception("An exception occurred in message_handler")
