@@ -22,7 +22,7 @@ async def message_handler(client: Client, update: Update, _, chats: dict):
 
             # Check for linked channel
             chat_obj = await client.get_chat(chat_id)
-            if chat_obj.linked_chat and chat_obj.id == channel_id:
+            if chat_obj.linked_chat and chat_obj.linked_chat.id == channel_id:
                 return
 
             # Delete the message sent by channel and ban it.
