@@ -1,0 +1,10 @@
+[pyrogram]
+# api_id, api_hash please go to https://my.telegram.org/apps
+api_id = [DATA EXPUNGED]
+api_hash = [DATA EXPUNGED]
+# Please create a new bot via @BotFather using /newbot command to get your bot_token
+bot_token = [DATA EXPUNGED]
+parse_mode = htm
+
+[plugins]
+root = plugins.handlers
