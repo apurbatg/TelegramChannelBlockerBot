@@ -39,6 +39,7 @@ Currently, (07-12-2021) Telegram didn't add those APIs in the official Schema.
 # Install
 
 Pre requirements:
+- (_Optional_) virtual environment (venv)
 - Python 3.8+ (pypy should also support, but not tested.)
 
 This project uses [poetry](https://python-poetry.org) to install dependencies.
@@ -87,11 +88,11 @@ _Note: You must give this bot permission to delete message and ban users._
 
 # Example bot
 
-Running official bot: [@Auto_Block_Channel_Bot](https://t.me/Auto_Block_Channel_Bot)
+Running instance: [@Auto_Block_Channel_Bot](https://t.me/Auto_Block_Channel_Bot)
 \
 simply add in your group and give `delete message` and `ban` user permission and there you go!
 
-_Linked group will not affect the function_
+_Linked group and nicked admin will be ignored_
 
 # Contributing
 

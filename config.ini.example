@@ -8,3 +8,6 @@ parse_mode = htm
 
 [plugins]
 root = plugins.handlers
+
+[settings]
+prefix = /
