@@ -51,11 +51,11 @@ def get_message_mentions(message: types.Message) -> Tuple[Union[int, str]]:
     # Get all user id mentioned (@) from message
     result = []
     try:
-        message_text = get_text(message).encode('utf-16')
+        message_text = get_text(message)
 
         for entities in message.entities:
             if entities.type == "mention":
-                result.append(message_text[entities.offset:entities.length].decode('utf-16'))
+                result.append(message_text[entities.offset:entities.length])
             elif entities.type == "text_mention":
                 result.append(entities.user.id)
     except:  # noqa
