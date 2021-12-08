@@ -21,10 +21,9 @@ async def message_handler(client: Client, update: Update, _, chats: dict):
             channel_id = int(f"-100{message.from_id.channel_id}")
 
             # Check for linked channel
-            chat_obj = await client.get_chat(chat_id)
-            if chat_obj.linked_chat and chat_obj.linked_chat.id == channel_id:
-                return
-            elif channel_id == chat_id:
+            if ((message.fwd_from and 
+                 message.fwd_from.saved_from_peer == message.fwd_from.from_id == message.from_id) or
+                channel_id == chat_id):
                 return
 
             # Delete the message sent by channel and ban it.
@@ -49,7 +48,7 @@ async def message_handler(client: Client, update: Update, _, chats: dict):
 
             break
         except errors.FloodWait as e:
-            logger.debug(f"Bot got rate limited, retry after {e.x} seconds...")
+            logger.debug(f"{e}, retry after {e.x} seconds...")
             await asyncio.sleep(e.x)
         except errors.ChatAdminRequired:
             pass
