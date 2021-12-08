@@ -48,7 +48,7 @@ async def get_channel_id(client: Client, message: types.Message) -> Optional[int
         channel_id = channel_peer.channel_id
 
         return get_raw_ch_number(channel_id)
-    except errors.UsernameOccupied:
+    except (errors.UsernameOccupied, errors.UsernameInvalid):
         return
     except:  # noqa
         logger.exception(f"Error while resolving peer {str_mention} in function get_channel_id")
@@ -63,18 +63,18 @@ async def cmd_get_whitelist(client: Client, message: types.Message):
     chat_obj = message.chat
     uid = user_obj and user_obj.id or "Unknown"
     cid = chat_obj and chat_obj.id or "Unknown"
-    channel_id = await get_channel_id(client, message)
     group_id = get_raw_ch_number(cid)
 
     try:
-        if not channel_id:
-            return
-
         # Check is admin
         if not await is_group_admin(cid, uid):
             return
 
-            # Check is linked channel
+        channel_id = await get_channel_id(client, message)
+        if not channel_id:
+            return
+
+        # Check is linked channel
         if await database.get_linked_group(channel_id=channel_id):
             await message.reply_text("Linked channel already whitelisted automatically.", True)
             return
@@ -95,18 +95,18 @@ async def cmd_add_whitelist(client: Client, message: types.Message):
     chat_obj = message.chat
     uid = user_obj and user_obj.id or "Unknown"
     cid = chat_obj and chat_obj.id or "Unknown"
-    channel_id = await get_channel_id(client, message)
     group_id = get_raw_ch_number(cid)
 
     try:
-        if not channel_id:
-            return
-
         # Check is admin
         if not await is_group_admin(cid, uid):
             return
 
-            # Check is linked channel
+        channel_id = await get_channel_id(client, message)
+        if not channel_id:
+            return
+
+        # Check is linked channel
         if await database.get_linked_group(channel_id=channel_id):
             await message.reply_text("Linked channel already whitelisted automatically.", True)
             return
@@ -139,15 +139,15 @@ async def cmd_remove_whitelist(client: Client, message: types.Message):
     chat_obj = message.chat
     uid = user_obj and user_obj.id or "Unknown"
     cid = chat_obj and chat_obj.id or "Unknown"
-    channel_id = await get_channel_id(client, message)
     group_id = get_raw_ch_number(cid)
 
     try:
-        if not channel_id:
-            return
-
         # Check is admin
         if not await is_group_admin(cid, uid):
+            return
+
+        channel_id = await get_channel_id(client, message)
+        if not channel_id:
             return
 
         # Check is linked channel
