@@ -121,8 +121,8 @@ async def cmd_add_whitelist(client: Client, message: types.Message):
         # Unban if it's banned before
         try:
             channel_id = int(f"-100{channel_id}")
-            await client.unban_chat_member(cid, channel_id)
-            logger.debug(f"Unbanned channel {channel_id} for group {cid}")
+            if await client.unban_chat_member(cid, channel_id):
+                logger.debug(f"Unbanned channel {channel_id} for group {cid}")
         except errors.ChatAdminRequired:
             pass
     except:  # noqa
