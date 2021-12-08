@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tgchannelblockerbot"
-version = "0.1.3"
+version = "0.1.3    "
 description = ""
 authors = ["sam01101 <sam@vtr.ac>"]
 

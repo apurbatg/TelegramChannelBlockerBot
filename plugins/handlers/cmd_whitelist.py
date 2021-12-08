@@ -48,6 +48,8 @@ async def get_channel_id(client: Client, message: types.Message) -> Optional[int
         channel_id = channel_peer.channel_id
 
         return get_raw_ch_number(channel_id)
+    except errors.UsernameOccupied:
+        return
     except:  # noqa
         logger.exception(f"Error while resolving peer {str_mention} in function get_channel_id")
         return
