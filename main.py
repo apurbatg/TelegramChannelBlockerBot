@@ -51,11 +51,18 @@ async def main():
     import plugins.glovar
     init_link_channel()
     bot_client = Client("bot")
-    await bot_client.start()
     setattr(plugins.glovar, "bot_client", bot_client)
-    await init_bot_commands(bot_client)
+    # Get username first before fully initialize
+    logger.debug("Connect first time for getting username only")
+    is_authorized = await bot_client.connect()
+    if not is_authorized:
+        await bot_client.authorize()
     bot_info = await bot_client.get_me()
     setattr(plugins.glovar, "bot_name", bot_info.username)
+    await bot_client.disconnect()
+    logger.debug(f"Disconnected, now for real bot initialize")
+    await bot_client.start()
+    await init_bot_commands(bot_client)
     fixed_prefix = f"Bot instance \"{bot_info.username}\" "
     logger.success(fixed_prefix + "started.")
     await idle()
