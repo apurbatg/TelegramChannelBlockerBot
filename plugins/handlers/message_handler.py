@@ -102,7 +102,7 @@ async def message_handler(client: Client, update: base.Update, _, chats: dict):
 
             try:
                 await client.delete_messages(chat_id, message.id)
-            except errors.ChatAdminRequired:
+            except (errors.ChatAdminRequired, errors.MessageDeleteForbidden):
                 pass
 
             break
