@@ -4,7 +4,7 @@ from pyrogram import Client, types, filters
 from plugins.filters import mod_filters
 from plugins.functions import database
 from plugins.functions.telegram import is_group_admin
-from plugins.functions.utils import get_command_type
+from plugins.functions.utils import get_command_type, get_raw_ch_number
 from plugins.glovar import prefix
 
 
@@ -17,17 +17,18 @@ async def cmd_stat(client: Client, message: types.Message):
     uid = user_obj and user_obj.id or "Unknown"
     cid = chat_obj and chat_obj.id or "Unknown"
     is_clear = get_command_type(message) == "clear"
+    chat_id = get_raw_ch_number(cid)
 
     try:
         if is_clear and await is_group_admin(cid, uid):
-            result_count = await database.clear_channel_stat_data(group_id=cid)
+            result_count = await database.clear_channel_stat_data(group_id=chat_id)
             if result_count is None:
                 await message.reply_text("No record to clear.", True)
                 return
             await message.reply_text(f"Cleared {result_count} channel(s).", True)
             return
 
-        result_count = database.get_banned_channels_count(group_id=cid)
+        result_count = database.get_banned_channels_count(group_id=chat_id)
         if result_count is None:
             await message.reply_text("This group didn't have ban record yet.", True)
             return
